@@ -1,7 +1,30 @@
-import cv2
 import numpy as np
+import pyautogui
 from matplotlib import pyplot as plt
-import glob, os
+
+import imutils
+import cv2
+import pyscreenshot as ImageGrab
+import time
+import sys
+import glob
+from blinkstick import blinkstick
+
+
+
+
+def light_red():
+    bstick = blinkstick.find_first()
+    for bstick in blinkstick.find_all():
+        for x in xrange(1,60):
+            bstick.set_color(channel=0, index=x, name="red")
+
+def light_green():
+    bstick = blinkstick.find_first()
+    for bstick in blinkstick.find_all():
+        for x in xrange(1,60):
+            bstick.set_color(channel=0, index=x, name="green")
+
 
 def get_health_numbers(imgpath):
   img = cv2.imread(imgpath, 0)
@@ -11,7 +34,7 @@ def get_health_numbers(imgpath):
   blur = cv2.GaussianBlur(img,(5,5),0)
   ret3,threshold = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
   
-  threshold = cv2.erode(threshold, np.ones((2,2)))
+  # threshold = cv2.erode(threshold, np.ones((2,2)))
   # cv2.imshow("T",threshold)
   # cv2.waitKey(0)
   # cv2.destroyAllWindows()
@@ -34,7 +57,7 @@ def get_health_numbers(imgpath):
     isHealthTotal=False
     if a > 200 and w > 5 and h > 38:
         s = 0.3
-    elif a > 80 and w >= 1 and h >= 19:
+    elif a > 55 and w >= 1 and h >= 19:
         isHealthTotal=True
         s = 0.15
     else:
@@ -76,24 +99,40 @@ def get_health_numbers(imgpath):
   if healthDigits and totalHealthDigits:
     print("----")
     print(imgpath)
-    print("health:" + (''.join(str(d) for d in healthDigits)))
-    print("total health:" + (''.join(str(d) for d in totalHealthDigits)))
+    currentHealth = (''.join(str(d) for d in healthDigits))
+    currentMaxHealth = (''.join(str(d) for d in totalHealthDigits))
+    print("health:" + currentHealth)
+    print("total health:" + currentMaxHealth)
+    if int(currentHealth) < 200:
+        light_red()
+    else:
+        # light_green()
+        print('')
+  else:
+    print("coulnt read")
 
 
 
 
 
-for p in sorted(glob.glob('./real_images/*.png')):
-      get_health_numbers(p)
+if __name__ == "__main__":
+  
+    try:
+        # get_health_numbers('output/251.png')
+        i = 226
+        light_green()
+        while True:
+            # time.sleep(0.1)
+            im=ImageGrab.grab(bbox=(350,1205,475,1260)) # X1,Y1,X2,Y2
+            # print(pyautogui.size()) 
+            
+            # im.show()
+            im.save("output/" + str(i) + '.png', 'PNG')
+            get_health_numbers("output/" + str(i) + '.png')
+            # print(i)
+            i=i+1
+    except KeyboardInterrupt:
+        sys.exit()
 
 
-# get_health_numbers('test_images/3.png')
-# get_health_numbers('real_images/368.png')
-# get_health_numbers('real_images/369.png')
-# get_health_numbers('real_images/380.png')
-# get_health_numbers('real_images/381.png')
-# get_health_numbers('real_images/69.png')
-# get_health_numbers('real_images/70.png')
-# get_health_numbers('test_images/8.png', 1)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+#-#

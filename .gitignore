@@ -1,0 +1,4 @@
+__pycache__
+output/*
+console
+.DS_Store
