@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import glob, os
 
-def apply_threshold(imgpath, index):
+def apply_threshold(imgpath):
   img = cv2.imread(imgpath, 0)
   blur = cv2.GaussianBlur(img,(5,5),0)
   ret3,threshold = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
@@ -19,14 +19,17 @@ def apply_threshold(imgpath, index):
   for p in sorted(glob.glob('./number_templates/*.png')):
       templates.append(cv2.imread(p, 0))
 
-  digits = []
+  healthDigits = []
+  totalHealthDigits = []
   for i, (x, y, w, h, a) in sorted(list(enumerate(stats)), key=lambda e: e[1][0]):
     if i == 0:
         continue
     s = None
-    if a > 500 and w > 10 and h > 50:
+    isHealthTotal=False
+    if a > 400 and w > 7 and h > 50:
         s = 0.4
     elif a > 100 and w > 3 and h > 25:
+        isHealthTotal=True
         s = 0.20
     else:
         cv2.rectangle(debug_image, (x,y), (x+w, y+h), (0, 0, 255))
@@ -46,35 +49,30 @@ def apply_threshold(imgpath, index):
         cv2.rectangle(debug_image, (x,y), (x+w, y+h), (0, 255, 0))
         
         if digit_match[digit] < 0.4:
-            digits.append(digit)
-        else:
-            raise ValueError('Could not classify digit %d' % (i, ))
+          if isHealthTotal:
+            totalHealthDigits.append(digit)
+          else:
+            healthDigits.append(digit)
+        # else:
+        #     # raise ValueError('Could not classify digit %d' % (i, ))
 
-  # cv2.imshow("debug",debug_image)
-  print(''.join(str(d) for d in digits))
+  cv2.imshow("debug",debug_image)
+  cv2.waitKey(0)
+  cv2.destroyAllWindows()
+  # print(healthDigits)
+  if healthDigits and totalHealthDigits:
+    print("----")
+    print(imgpath)
+    print("health:" + (''.join(str(d) for d in healthDigits)))
+    print("total health:" + (''.join(str(d) for d in totalHealthDigits)))
 
 
+# for p in sorted(glob.glob('./test_images/*.png')):
+#       apply_threshold(p)
 
 
-  # cv2.imshow('threshold2' + str(index), im2)
-
-
-# def compare_images(img, img2):
-#   res = cv2.matchTemplate(img, img2,cv2.TM_CCOEFF_NORMED)
-#   return res
-
-
-
-# for index, pathAndFilename in enumerate(glob.iglob(os.path.join('test_images', '*.png'))):
-#   print(str(index))
-#   apply_threshold(pathAndFilename, index)
-
-apply_threshold('test_images/23.png', 1)
-# img1 = cv2.imread('got0.png', 0)
-# img2 = cv2.imread('number_templates/0.png', 0)
-# opa = compare_images(img1, img2)
-
-# print(opa)
+apply_threshold('test_images/3.png')
+# apply_threshold('test_images/8.png', 1)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 
