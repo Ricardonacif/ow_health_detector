@@ -40,6 +40,9 @@ def apply_threshold(imgpath):
         digit_match = []
         for i, t in enumerate(templates):
             t = cv2.resize(t, (0, 0), fx=s, fy=s)
+            cv2.imshow('t', t)
+            cv2.imshow('region', region)
+            cv2.waitKey(0)
             digit_match.append(np.min(cv2.matchTemplate(region, t, cv2.TM_SQDIFF_NORMED)))
             
         digit = np.argmin(digit_match)
