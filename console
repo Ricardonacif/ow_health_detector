@@ -1,0 +1,5 @@
+1. capture the region of the screen with the health
+2. use cv2.AdaptiveThreshold to get a binary image where the numbers are white and everything else is black
+3. use connectedComponents to extract each digit (and discard components that are the wrong size)
+4. iterate through each digit comparing it to templateds for the digits 0-9, and finding hte best match (also have a maximum threshold it must fall under)
+5. combine digit classifications to get the full number(editado)
