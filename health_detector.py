@@ -1,5 +1,7 @@
 import numpy as np
 import pyautogui
+import pyscreenshot as ImageGrab
+
 from matplotlib import pyplot as plt
 
 import imutils
@@ -7,9 +9,20 @@ import cv2
 import sys
 import glob
 
-def get_health_numbers(imgpath):
-  img = cv2.imread(imgpath, 0)
-  imgcolor = cv2.imread(imgpath, 1)
+templates = []
+for p in sorted(glob.glob('./number_templates/*.png')):
+  templates.append(cv2.imread(p, 0))
+
+def get_health_numbers():
+  imgg = ImageGrab.grab(bbox=(350,1205,475,1260))
+  img_np = np.array(imgg) #this is the array obtained from conversion
+  img = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+  # cv2.imshow("test", img)
+  # cv2.waitKey(0)
+  # cv2.destroyAllWindows()
+
+  # img = cv2.imread(imgpath, 0)
+  
   # debug_image = imgcolor.copy()
   
   blur = cv2.GaussianBlur(img,(5,5),0)
@@ -25,9 +38,7 @@ def get_health_numbers(imgpath):
   # print("x, y, w, h, a")
   # print(stats)
 
-  templates = []
-  for p in sorted(glob.glob('./number_templates/*.png')):
-      templates.append(cv2.imread(p, 0))
+
 
   healthDigits = []
   totalHealthDigits = []
@@ -41,8 +52,8 @@ def get_health_numbers(imgpath):
     elif a > 55 and w >= 1 and h >= 19:
         isHealthTotal=True
         s = 0.15
-    else:
-        print("")
+    # else:
+    #     print("")
         # cv2.rectangle(debug_image, (x,y), (x+w, y+h), (0, 0, 255))
         
     if s:
@@ -90,7 +101,7 @@ def get_health_numbers(imgpath):
     else: 
         currentHealth = int(currentHealth)
 
-    if currentMaxHealth == "00" or currentMaxHealth == "000" :
+    if currentMaxHealth == "00" or currentMaxHealth == "000" or int(currentMaxHealth) < 150:
         currentMaxHealth = None
     else: 
         currentMaxHealth = int(currentMaxHealth)

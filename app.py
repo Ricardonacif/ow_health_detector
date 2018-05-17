@@ -1,5 +1,4 @@
 import health_detector
-import pyscreenshot as ImageGrab
 import hero
 
 if __name__ == "__main__":
@@ -11,12 +10,12 @@ if __name__ == "__main__":
         print(myHero)
         while True:
             # time.sleep(0.1)
-            im=ImageGrab.grab(bbox=(350,1205,475,1260)) # X1,Y1,X2,Y2
+            # im=ImageGrab.grab(bbox=(350,1205,475,1260)) # X1,Y1,X2,Y2
             # print(pyautogui.size()) 
             
             # im.show()
-            im.save("output/" + str(i) + '.png', 'PNG')
-            health, totalHealth = health_detector.get_health_numbers("output/" + str(i) + '.png')
+            # im.save("output/" + str(i) + '.png', 'PNG')
+            health, totalHealth = health_detector.get_health_numbers()
             print("health:")
             print(str(health))
             print("totalhealth:")
