@@ -13,10 +13,13 @@ templates = []
 for p in sorted(glob.glob('./number_templates/*.png')):
   templates.append(cv2.imread(p, 0))
 
-def get_health_numbers():
-  imgg = ImageGrab.grab(bbox=(350,1205,475,1260))
-  img_np = np.array(imgg) #this is the array obtained from conversion
-  img = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
+def get_health_numbers(filepath=None):
+  if filepath:
+    img = cv2.imread(filepath,0)
+  else:
+    imgg = ImageGrab.grab(bbox=(350,1205,475,1260))
+    img_np = np.array(imgg) #this is the array obtained from conversion
+    img = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)
   # cv2.imshow("test", img)
   # cv2.waitKey(0)
   # cv2.destroyAllWindows()
@@ -76,7 +79,7 @@ def get_health_numbers():
         # cv2.putText(debug_image, '%1.2f' % (digit_match[digit]), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0))
         # cv2.rectangle(debug_image, (x,y), (x+w, y+h), (0, 255, 0))
         
-        if digit_match[digit] < 0.4:
+        if digit_match[digit] < 0.38:
           if isHealthTotal:
             totalHealthDigits.append(digit)
           else:
