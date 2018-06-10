@@ -53,9 +53,9 @@ def get_health_numbers(filepath=None):
         continue
     s = None
     isHealthTotal=False
-    if a > 200 and w > 5 and h > 38:
+    if a > 180 and w > 5 and h > 35:
         s = 0.3
-    elif a > 55 and w >= 1 and h >= 19:
+    elif a > 50 and w >= 1 and h >= 19:
         isHealthTotal=True
         s = 0.15
     # else:
