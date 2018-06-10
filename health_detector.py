@@ -70,10 +70,10 @@ def get_health_numbers(filepath=None):
             # cv2.imshow("T",t)
             
             t = cv2.resize(t, (0, 0), fx=s, fy=s)
-            cv2.imshow("T2",t)
-            cv2.imshow("region",region)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
+            # cv2.imshow("T2",t)
+            # cv2.imshow("region",region)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
             digit_match.append(np.min(cv2.matchTemplate(region, t, cv2.TM_SQDIFF_NORMED)))
             
         digit = np.argmin(digit_match)
@@ -82,7 +82,7 @@ def get_health_numbers(filepath=None):
         # cv2.putText(debug_image, '%1.2f' % (digit_match[digit]), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0))
         # cv2.rectangle(debug_image, (x,y), (x+w, y+h), (0, 255, 0))
         
-        if digit_match[digit] < 0.38:
+        if digit_match[digit] < 0.44:
           if isHealthTotal:
             totalHealthDigits.append(digit)
           else:
