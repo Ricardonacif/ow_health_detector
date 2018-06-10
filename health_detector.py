@@ -70,10 +70,10 @@ def get_health_numbers(filepath=None):
             # cv2.imshow("T",t)
             
             t = cv2.resize(t, (0, 0), fx=s, fy=s)
-            # cv2.imshow("T2",t)
-            # cv2.imshow("region",region)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
+            cv2.imshow("T2",t)
+            cv2.imshow("region",region)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
             digit_match.append(np.min(cv2.matchTemplate(region, t, cv2.TM_SQDIFF_NORMED)))
             
         digit = np.argmin(digit_match)
