@@ -31,7 +31,7 @@ def get_health_numbers(filepath=None):
   blur = cv2.GaussianBlur(img,(5,5),0)
   ret3,threshold = cv2.threshold(blur,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
   
-  # threshold = cv2.erode(threshold, np.ones((2,2)))
+  threshold = cv2.erode(threshold, np.ones((1,2)))
   # cv2.imshow("T",threshold)
   # cv2.waitKey(0)
   # cv2.destroyAllWindows()

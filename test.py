@@ -16,13 +16,14 @@ def find_between( s, first, last ):
 def validate_image_with_filename(filename):
     print(filename)
     if ' ' in filename:
-        health_string = find_between(filename, '\\', ' ')
+        health_string = find_between(filename, '/', ' ')
     else:
-        health_string = find_between(filename, '\\', '.')
+        health_string = find_between(filename, '/', '.')
 
     print("healthstring:")
     print(health_string)
     healths = health_string.split("#")
+    print(healths)
     img_current_health = healths[0]
     img_total_health = healths[1]
     print("filename:")
