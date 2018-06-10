@@ -2,8 +2,6 @@ import numpy as np
 import pyautogui
 import pyscreenshot as ImageGrab
 
-from matplotlib import pyplot as plt
-
 import imutils
 import cv2
 import sys

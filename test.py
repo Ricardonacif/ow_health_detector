@@ -1,7 +1,8 @@
 import hero
 import time
 import health_detector
-
+import glob
+import sys
 
 def find_between( s, first, last ):
     try:
@@ -44,41 +45,6 @@ def percentage(part, whole):
 if __name__ == "__main__":
   
     try:
-        # myHero = hero.Hero()
-        # print(myHero)
-        # # time.sleep(1)
-        # # myHero.new_health_received(150, 200)
-        # # print(myHero)
-
-        # # # time.sleep(3)
-        # # # print(myHero)
-
-
-        # time.sleep(1)
-        # myHero.new_health_received(30, 200)
-        # print(myHero)
-
-        # # time.sleep(1)
-        # # myHero.new_health_received(200, 200)
-        # # print(myHero)
-
-        # time.sleep(1)
-        # myHero.new_health_received(None, None)
-        # print(myHero)
-
-
-        # time.sleep(1)
-        # myHero.new_health_received(100, None)
-        # print(myHero)
-
-        # time.sleep(1)
-        # myHero.new_health_received(None, 600)
-        # print(myHero)
-
-
-        print("porra")
-        print('-------')
-        import glob
         correct = []
         incorrect = []
         for filename in glob.iglob('test_images/*.png'):
@@ -94,15 +60,5 @@ if __name__ == "__main__":
         total_images = len(correct) + len(incorrect)
         print("Accuracy: %s" % (percentage(len(correct), total_images)))
 
-
-
-
-
-
     except KeyboardInterrupt:
         sys.exit()
-
-
-#-#
-
-
