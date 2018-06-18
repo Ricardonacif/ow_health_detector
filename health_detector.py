@@ -11,6 +11,14 @@ templates = []
 for p in sorted(glob.glob('./number_templates/*.png')):
   templates.append(cv2.imread(p, 0))
 
+def show_images(images):
+  for img in images:
+    cv2.imshow("img",img)
+  cv2.waitKey(0)
+  cv2.destroyAllWindows()
+
+
+
 def get_health_numbers(filepath=None):
   if filepath:
     img = cv2.imread(filepath,0)
@@ -33,9 +41,7 @@ def get_health_numbers(filepath=None):
   ret3,threshold = cv2.threshold(img,0,255,cv2.THRESH_OTSU)
   
   threshold = cv2.erode(threshold, np.ones((1,2)))
-  # cv2.imshow("T",threshold)
-  # cv2.waitKey(0)
-  # cv2.destroyAllWindows()
+  
 
   
   count, labels, stats, centroids = cv2.connectedComponentsWithStats(threshold)
@@ -65,7 +71,6 @@ def get_health_numbers(filepath=None):
         region = cv2.copyMakeBorder(region, 10, 10, 10, 30, cv2.BORDER_CONSTANT, 0)
         digit_match = []
         for i, t in enumerate(templates):
-            # cv2.imshow("T",t)
             
             t = cv2.resize(t, (0, 0), fx=s, fy=s)
             # cv2.imshow("T2",t)
@@ -73,8 +78,9 @@ def get_health_numbers(filepath=None):
             # cv2.waitKey(0)
             # cv2.destroyAllWindows()
             digit_match.append(np.min(cv2.matchTemplate(region, t, cv2.TM_SQDIFF_NORMED)))
-            
+        # print(digit_match)
         digit = np.argmin(digit_match)
+        # print(digit)
         
         # cv2.putText(debug_image, '%d' % (digit), (x, y-22), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0))
         # cv2.putText(debug_image, '%1.2f' % (digit_match[digit]), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 255, 0))
@@ -105,7 +111,9 @@ def get_health_numbers(filepath=None):
     else: 
         currentHealth = int(currentHealth)
 
-    if currentMaxHealth == "00" or currentMaxHealth == "000" or int(currentMaxHealth) < 150:
+    # bellow I considered if the end of max health is 80, 08 or 88, then its a can't read (rarely this will be true, and it confuses 0 with 80 a lot)
+    # print("currentMaxHealth[-2:] " + currentMaxHealth[-2:])
+    if currentMaxHealth == "00" or currentMaxHealth == "000" or int(currentMaxHealth) < 150 or currentMaxHealth[-2:] == "80"  or currentMaxHealth[-2:] == "08"  or currentMaxHealth[-2:] == "88":
         currentMaxHealth = None
     else: 
         currentMaxHealth = int(currentMaxHealth)

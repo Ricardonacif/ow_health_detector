@@ -53,7 +53,15 @@ if __name__ == "__main__":
         values_match = []
         values_doesnt_match = []
         cant_read = []
-        for filename in glob.iglob('test_images/*.png'):
+        wrong_values = ['test_images/0#600 (37).png',
+            # 'test_images/489#600 (4).png',
+            # 'test_images/443#600 (10).png',
+            # 'test_images/484#600.png',
+            # 'test_images/469#600.png',
+            # 'test_images/324#600.png',
+            # 'test_images/0#600 (30).png'
+            ]
+        for filename in wrong_values:
             result = validate_image_with_filename(filename)
             print(result)
             if result == 'values_match':
