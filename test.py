@@ -3,7 +3,12 @@ import time
 import health_detector
 import glob
 import sys
+import os
 
+backslash_symbol = '/'
+
+if os.name == 'nt':
+    backslash_symbol = '\\'
 def find_between( s, first, last ):
     try:
         start = s.index( first ) + len( first )
@@ -17,9 +22,9 @@ def find_between( s, first, last ):
 def validate_image_with_filename(filename):
     print(filename)
     if ' ' in filename:
-        health_string = find_between(filename, '\\', ' ')
+        health_string = find_between(filename, backslash_symbol, ' ')
     else:
-        health_string = find_between(filename, '\\', '.')
+        health_string = find_between(filename, backslash_symbol, '.')
 
     print("healthstring:")
     print(health_string)
