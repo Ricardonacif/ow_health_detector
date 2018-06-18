@@ -1,7 +1,6 @@
 import numpy as np
 import pyautogui
-import pyscreenshot as ImageGrab
-
+from PIL import ImageGrab
 import imutils
 import cv2
 import sys

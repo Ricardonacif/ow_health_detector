@@ -44,17 +44,17 @@ class Hero:
     def light_red(self ):
         bstick = blinkstick.find_first()
         for bstick in blinkstick.find_all():
-            for x in xrange(1,60):
+            for x in range(1,60):
                 bstick.set_color(channel=0, index=x, name="red")
 
     def light_green(self ):
         bstick = blinkstick.find_first()
         for bstick in blinkstick.find_all():
-            for x in xrange(1,60):
+            for x in range(1,60):
                 bstick.set_color(channel=0, index=x, name="green")
 
     def light_yellow(self ):
         bstick = blinkstick.find_first()
         for bstick in blinkstick.find_all():
-            for x in xrange(1,60):
+            for x in range(1,60):
                 bstick.set_color(channel=0, index=x, name="yellow")
