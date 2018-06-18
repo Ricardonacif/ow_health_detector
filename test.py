@@ -34,10 +34,15 @@ def validate_image_with_filename(filename):
     print('detected:')
     print(det_health)
     print(det_total_health)
-    if str(det_health) == img_current_health and img_total_health == str(det_total_health):
-        return True
+    if det_health is not None and det_total_health is not None:
+        if str(det_health) == img_current_health and img_total_health == str(det_total_health):
+            return 'values_match'
+        else:
+            return 'values_doesnt_match'
     else:
-        return False
+        return 'cant_read'
+
+
 
 def percentage(part, whole):
   return 100 * float(part)/float(whole)
@@ -45,20 +50,31 @@ def percentage(part, whole):
 if __name__ == "__main__":
   
     try:
-        correct = []
-        incorrect = []
+        values_match = []
+        values_doesnt_match = []
+        cant_read = []
         for filename in glob.iglob('test_images/*.png'):
-            valid = validate_image_with_filename(filename)
-            print(valid)
-            if valid:
-                correct.append(filename)
+            result = validate_image_with_filename(filename)
+            print(result)
+            if result == 'values_match':
+                values_match.append(filename)
+            elif result == 'values_doesnt_match':
+                values_doesnt_match.append(filename)
             else:
-                incorrect.append(filename)
-
-        print("Final result:")
-        print("Final result is: Positive: %s. Negative: %s ." % (len(correct), len(incorrect)))
-        total_images = len(correct) + len(incorrect)
-        print("Accuracy: %s" % (percentage(len(correct), total_images)))
+                cant_read.append(filename)
+        print("---------------------\n")
+        print("Final result is:")
+        print("values_match: %s." % (len(values_match)))
+        print("values_doesnt_match: %s." % (len(values_doesnt_match)))
+        print("cant_read: %s." % (len(cant_read)))
+        # print("Final result is: Positive: %s. Negative: %s ." % (len(correct), len(incorrect)))
+        # print("Final result is: Positive: %s. Negative: %s ." % (len(correct), len(incorrect)))
+        # print()
+        total_images = len(values_match) + len(values_doesnt_match) + len(cant_read)
+        incorrect = len(values_doesnt_match) + len(cant_read)
+        print("Accuracy: %s" % (percentage(len(values_match), total_images)))
+        readables_total = len(values_match) + len(values_doesnt_match)
+        print("Accuracy ignoring cant read: %s" % (percentage(len(values_match), readables_total)))
 
     except KeyboardInterrupt:
         sys.exit()
